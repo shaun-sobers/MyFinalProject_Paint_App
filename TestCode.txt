@@ -1,0 +1,113 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
+using System.Drawing;
+
+
+namespace TestProject1
+{
+    [TestClass]
+    public class Tests
+    {
+        [SetUp]
+        public void Setup()
+        {
+        }
+
+        [Test]
+        public void Test1()
+        {
+            Assert.Pass();
+        }
+
+        private Form1 form;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            form = new Form1();
+        }
+
+        [TestMethod]
+        public void TestShapesListIsNotNull()
+        {
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsNotNull(form.Shapes);
+        }
+
+        [TestMethod]
+        public void TestShapesListIsEmptyOnStart()
+        {
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(0, form.Shapes.Count);
+        }
+
+
+
+        [TestMethod]
+        public void TestUndoStackIsEmptyOnStart()
+        {
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(0, form.UndoStack.Count);
+        }
+
+        [TestMethod]
+        public void TestRedoStackIsNotNull()
+        {
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsNotNull(form.RedoStack);
+        }
+
+        [TestMethod]
+        public void TestRedoStackIsEmptyOnStart()
+        {
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(0, form.RedoStack.Count);
+        }
+
+        [TestMethod]
+        public void TestUpdatePanelsUpdatesBackColorOfPanel1()
+        {
+            var originalColor = form.panel1.BackColor;
+            form.strokeColorDialog.Color = Color.Red;
+            form.UpdatePanels();
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreNotEqual(originalColor, form.panel1.BackColor);
+        }
+
+        [TestMethod]
+        public void TestUpdatePanelsUpdatesBackColorOfPanel2()
+        {
+            var originalColor = form.panel2.BackColor;
+            form.fillColorDialog.Color = Color.Blue;
+            form.UpdatePanels();
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreNotEqual(originalColor, form.panel2.BackColor);
+        }
+
+        [TestMethod]
+        public void TestButton1ClickShowsStrokeColorDialog()
+        {
+            var originalColor = form.strokeColorDialog.Color;
+            form.button1.PerformClick();
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreNotEqual(originalColor, form.strokeColorDialog.Color);
+        }
+
+        [TestMethod]
+        public void TestButton2ClickShowsFillColorDialog()
+        {
+            var originalColor = form.fillColorDialog.Color;
+            form.button2.PerformClick();
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreNotEqual(originalColor, form.fillColorDialog.Color);
+        }
+
+
+        [TestMethod]
+        public void TestPictureBox1ClickAddsNewShapeToShapesList()
+        {
+            var originalCount = form.Shapes.Count;
+            form.pictureBox1_Click(form.pictureBox1, new EventArgs());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(originalCount + 1, form.Shapes.Count);
+        }
+
+        [TestMethod]
+        public void TestPictureBox1ClickAddsNewShapeToUndoStack()
+        {
+            var originalCount = form.UndoStack.Count;
+            form.pictureBox1_Click(form.pictureBox1, new EventArgs());
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(originalCount + 1, form.UndoStack.Count);
+        }
+    }
+}
